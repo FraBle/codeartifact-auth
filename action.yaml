@@ -23,5 +23,7 @@ outputs:
   status: # success/failure
     description: 'If we succeeded or failed to login'
 runs:
-  using: node18
+  # `node18` is not supported yet
+  # https://github.com/actions/runner-images/issues/7002
+  using: node16
   main: './action/action.js'
