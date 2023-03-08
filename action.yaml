@@ -1,5 +1,5 @@
-name: 'npm codeartifact login'
-description: 'Logs into a npm codeartifact repo'
+name: 'Configure npm with AWS CodeArtifact'
+description: 'Logs into npm repo hosted on AWS CodeArtifact'
 inputs:
   accountId: #String
     description: 'AWS AccountId'
