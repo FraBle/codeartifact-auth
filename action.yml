@@ -1,0 +1,27 @@
+name: 'Configure npm with AWS CodeArtifact'
+description: 'Logs into npm repo hosted on AWS CodeArtifact'
+inputs:
+  accountId: #String
+    description: 'AWS AccountId'
+    required: true
+  region: #String
+    description: 'AWS Region'
+    required: true
+  domain: #String
+    description: 'Codeartifact domain'
+    required: true
+  repository: #String
+    description: 'Codeartifact Repo'
+    required: true
+  scope: #String
+    description: 'NPM Scope'
+    required: true
+  packageType: #String
+    description: 'PackageType'
+    required: true
+outputs:
+  status: # success/failure
+    description: 'If we succeeded or failed to login'
+runs:
+  using: node18
+  main: './action/action.js'
