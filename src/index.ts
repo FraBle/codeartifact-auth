@@ -60,19 +60,21 @@ function validateAWSConfigVariables(): void {
 async function setNpmConfig(config: awsCodeArtifactConfig): Promise<void> {
   const {domain, accountId, region, repository, scope} = parseConfig(config)
 
-  if (!scope)
-    errorHandler('Missing Scope')
-
   const token = await getAuthorizationToken(domain, accountId)
-
   const endpoint = `//${domain}-${accountId}.d.codeartifact.${region}.amazonaws.com/npm/${repository}/`
 
-  execSync(`npm config set ${scope}:registry https://${domain}-${accountId}.d.codeartifact.${region}.amazonaws.com/npm/${repository}/`)
+  if (!scope) {
+    console.log('Scope has not been set')
+    execSync(
+      `npm config set registry https://${domain}-${accountId}.d.codeartifact.${region}.amazonaws.com/npm/${repository}/`
+    )
+  } else
+    execSync(
+      `npm config set ${scope}:registry https://${domain}-${accountId}.d.codeartifact.${region}.amazonaws.com/npm/${repository}/`
+    )
   execSync(`npm config set ${endpoint}:_authToken=${token}`)
   execSync(`npm config set ${endpoint}:always-auth=true`)
-
-  console.log(`Set npm credentials for ${scope}`)
-
+  console.log(`Set npm credentials${scope ? ` for ${scope}` : ''}`)
 }
 
 async function setPoetryConfig(config: awsCodeArtifactConfig): Promise<void> {

@@ -16,7 +16,7 @@ The below action will setup npm with the codeartifact registry scoped to the ref
   with:       
     domain: "<domain-in-aws-codeartifact>"
     repository: "<repository-in-codeartifact>"
-    scope: "<Package Scope"
+    scope: "<Package Scope (optional)>"
     region: "<AWS Region>"
     accountId: "<AWS AccountId>"
     packageType: "<Package Type>" #Supports poetry or npm as arguments
