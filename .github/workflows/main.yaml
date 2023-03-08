@@ -25,7 +25,7 @@ jobs:
       - run: npm --silent ci --quiet --no-progress --no-audit --unsafe-perm --loglevel warn
       - run: npm run audit
       - run: npm run lint
-  publish:
+  publish-npm:
     name: Publish to NPM
     runs-on: ubuntu-latest
     if: github.repository == 'MondoPower/codeartifact-auth' && !(github.event_name == 'pull_request')
@@ -40,11 +40,22 @@ jobs:
         with:
           token: ${{ secrets.NPM_TOKEN }}
           access: public
+  publish-github:
+    name: Release to GitHub Actions Marketplace
+    runs-on: ubuntu-latest
+    if: contains(github.ref, 'tags/v')
+    needs: verify
+    steps:
+      - uses: technote-space/release-github-actions@v8
+        with:
+          BRANCH_NAME: releases/${MAJOR}
+          CLEAN_TARGETS: '.gitignore,.github,*.lock,*.json'
+          COMMIT_MESSAGE: 'Build: release ${{ github.ref_name }} via ${{ github.sha }}'
   slack:
     name: Notify Slack on failure
-    needs: publish
-    if: github.repository == 'MondoPower/codeartifact-auth' && !(github.event_name == 'pull_request') && failure()
     runs-on: ubuntu-latest
+    if: github.repository == 'MondoPower/codeartifact-auth' && !(github.event_name == 'pull_request') && failure()
+    needs: [publish-npm, publish-github]
     steps:
       - uses: actions/checkout@v3
       - name: Slack Notification
