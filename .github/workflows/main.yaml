@@ -1,5 +1,5 @@
 
-name: mondo-eslint-config
+name: CI
 on:
   pull_request:
     branches:
@@ -9,6 +9,7 @@ on:
       - '**.md'
   push:
     tags:
+      - v2.*
     branches:
       - main
     paths-ignore:
